@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Callable, Optional
 import polars as pl
 
 from analyzer.Analyzer import Analyzer
@@ -13,7 +13,7 @@ from analyzer.utils.FileType import FileType
 
 
 class PolarsAnalyzer(Analyzer):
-    file_type_to_reader: dict[FileType, callable] = {
+    file_type_to_reader: dict[FileType, Callable] = {
         FileType.CSV: pl.read_csv,
         FileType.JSON: pl.read_json,
         FileType.PARQUET: pl.read_parquet,
@@ -35,9 +35,7 @@ class PolarsAnalyzer(Analyzer):
             missing_values={col: df[col].null_count() for col in df.columns},
         )
 
-    def generate_numeric_column_report(
-        self, col: str, series: pl.Series
-    ) -> NumericColumnReport:
+    def generate_numeric_column_report(self, col: str, series: pl.Series) -> NumericColumnReport:
         """Generates a report for numeric columns.
         Args:
             series (pl.Series): The numeric column series.
@@ -70,9 +68,7 @@ class PolarsAnalyzer(Analyzer):
             null_count=series.null_count(),
         )
 
-    def generate_temporal_column_report(
-        self, col: str, series: pl.Series
-    ) -> TemporalColumnReport:
+    def generate_temporal_column_report(self, col: str, series: pl.Series) -> TemporalColumnReport:
         """Generates a report for temporal columns.
         Args:
             series (pl.Series): The temporal column series.
@@ -113,9 +109,7 @@ class PolarsAnalyzer(Analyzer):
                 covariance_report.add_covariance(col, covar_column, covar_value)
         return covariance_report
 
-    def analyze_file(
-        self, file_path: str, file_type: Optional[FileType] = None
-    ) -> FullReport:
+    def analyze_file(self, file_path: str, file_type: Optional[FileType] = None) -> FullReport:
         # Read the CSV file using Polars
 
         if file_type:
