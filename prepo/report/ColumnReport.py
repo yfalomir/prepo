@@ -4,7 +4,7 @@ from abc import ABC, abstractmethod
 from typing import Dict, Self
 from pydantic import BaseModel
 
-from alert.Alert import Alert
+from prepo.alert.Alert import Alert
 
 
 class ColumnReport(ABC, BaseModel):

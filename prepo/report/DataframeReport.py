@@ -2,7 +2,7 @@
 
 from pydantic import BaseModel
 
-from alert.Alert import Alert
+from prepo.alert.Alert import Alert
 
 
 class DataframeReport(BaseModel):

@@ -1,7 +1,7 @@
-from report.FullReport import FullReport
-from report.DataframeReport import DataframeReport
-from report.NumericColumnReport import NumericColumnReport
-from report.CovarianceReport import CovarianceReport
+from prepo.report.FullReport import FullReport
+from prepo.report.DataframeReport import DataframeReport
+from prepo.report.NumericColumnReport import NumericColumnReport
+from prepo.report.CovarianceReport import CovarianceReport
 
 
 def test_full_report_comparison():

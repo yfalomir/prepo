@@ -3,15 +3,15 @@
 from typing import Callable, Optional
 import polars as pl
 
-from analyzer.Analyzer import Analyzer
-from report.NumericColumnReport import NumericColumnReport
-from report.StringColumnReport import StringColumnReport
-from report.TemporalColumnReport import TemporalColumnReport
-from report.DataframeReport import DataframeReport
-from report.ColumnReport import ColumnReport
-from report.FullReport import FullReport
-from report.CovarianceReport import CovarianceReport
-from analyzer.utils.FileType import FileType
+from prepo.analyzer.Analyzer import Analyzer
+from prepo.analyzer.utils.FileType import FileType
+from prepo.report.NumericColumnReport import NumericColumnReport
+from prepo.report.StringColumnReport import StringColumnReport
+from prepo.report.TemporalColumnReport import TemporalColumnReport
+from prepo.report.DataframeReport import DataframeReport
+from prepo.report.ColumnReport import ColumnReport
+from prepo.report.FullReport import FullReport
+from prepo.report.CovarianceReport import CovarianceReport
 
 
 class PolarsAnalyzer(Analyzer):
