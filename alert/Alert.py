@@ -1,4 +1,9 @@
+"""Defines the Alert class to store insights about data."""
+
+
 class Alert:
+    """Stores insights about the data and it's criticity."""
+
     def __init__(self, message, level="info"):
         self.message = message
         self.level = level

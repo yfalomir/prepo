@@ -22,5 +22,12 @@ dev = [
 # But use a different line length.
 line-length = 100
 
+[tool.ruff.lint]
+select = ["E", "F", "D"]
+ignore = ["D203", "D213", "D104", "D105", "D107"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["D"]
+
 [tool.mypy]
 plugins = ['pydantic.mypy']
