@@ -2,21 +2,21 @@ from report.StringColumnReport import StringColumnReport
 
 
 def test_string_column_report_comparison():
-    original_numeric_column_report = StringColumnReport(
+    original_string_column_report = StringColumnReport(
         name="original",
         count=786,
         unique_count=10,
         null_count=5,
     )
-    modified_numeric_column_report = StringColumnReport(
+    modified_string_column_report = StringColumnReport(
         name="modified",
         count=1786,
         unique_count=1000,
         null_count=500,
     )
 
-    alerts = original_numeric_column_report.get_comparison_alerts(
-        modified=modified_numeric_column_report, default_percentage_threshold=0.1
+    alerts = original_string_column_report.get_comparison_alerts(
+        modified=modified_string_column_report, default_percentage_threshold=0.1
     )
 
     assert len(alerts) == 3
