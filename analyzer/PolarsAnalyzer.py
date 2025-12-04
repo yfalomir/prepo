@@ -8,12 +8,12 @@ from analyzer.report.TemporalColumnReport import TemporalColumnReport
 from analyzer.report.DataframeReport import DataframeReport
 from analyzer.report.ColumnReport import ColumnReport
 from analyzer.report.FullReport import FullReport
+from analyzer.report.CovarianceReport import CovarianceReport
 from analyzer.utils.FileType import FileType
 
 
 class PolarsAnalyzer(Analyzer):
-
-    file_type_to_reader : dict[FileType, callable] = {
+    file_type_to_reader: dict[FileType, callable] = {
         FileType.CSV: pl.read_csv,
         FileType.JSON: pl.read_json,
         FileType.PARQUET: pl.read_parquet,
@@ -105,11 +105,21 @@ class PolarsAnalyzer(Analyzer):
             column_reports.append(report)
         return column_reports
 
-    def analyze_file(self, file_path: str, file_type: Optional[FileType]) -> FullReport:
+    def generate_covariance_report(self, df) -> CovarianceReport:
+        covariance_report = CovarianceReport()
+        for index, col in enumerate(df.columns):
+            for covar_column in df.columns[index+1:]:
+                covar_value =pl.cov(df[col], df[covar_column], eager=True).item(0)
+                covariance_report.add_covariance(col, covar_column, covar_value)
+        return covariance_report
+
+    def analyze_file(
+        self, file_path: str, file_type: Optional[FileType] = None
+    ) -> FullReport:
         # Read the CSV file using Polars
 
         if file_type:
-            reader = self.file_type_to_reader.get(file_type, pl.read_csv) 
+            reader = self.file_type_to_reader.get(file_type, pl.read_csv)
         elif file_path.endswith(".csv"):
             reader = pl.read_csv
         elif file_path.endswith(".json"):
@@ -120,8 +130,9 @@ class PolarsAnalyzer(Analyzer):
             reader = pl.read_excel
 
         df = reader(file_path)
-        
+
         dataframe_report = self.generate_dataframe_report(file_path, df)
+        covariance_report = self.generate_covariance_report(df)
         column_report = self.generate_column_report(df)
 
-        return FullReport(dataframe_report, column_report)
+        return FullReport(dataframe_report, covariance_report, column_report)

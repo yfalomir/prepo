@@ -1,5 +1,6 @@
 from analyzer.report.DataframeReport import DataframeReport
 from analyzer.report.ColumnReport import ColumnReport
+from analyzer.report.CovarianceReport import CovarianceReport
 
 from typing import Optional
 
@@ -8,9 +9,11 @@ class FullReport:
     def __init__(
         self,
         dataframe_report: Optional[DataframeReport] = None,
+        covariance_report: Optional[CovarianceReport] = None,
         column_reports: Optional[list[ColumnReport]] = None,
     ):
         self.dataframe_report: Optional[DataframeReport] = dataframe_report
+        self.covariance_report: Optional[CovarianceReport] = covariance_report
         self.column_reports: list[ColumnReport] = (
             [] if column_reports is None else column_reports
         )
@@ -52,5 +55,12 @@ class FullReport:
                     or f"Column {idx}"
                 )
                 parts.append(_box(str(col), title=f"Column: {name}"))
+
+        covariance_text = (
+            str(self.covariance_report)
+            if self.covariance_report is not None
+            else "No covariance report"
+        )
+        parts.append(_box(covariance_text, title="Covariance Report"))
 
         return "\n\n".join(parts)
