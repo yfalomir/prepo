@@ -108,8 +108,8 @@ class PolarsAnalyzer(Analyzer):
     def generate_covariance_report(self, df) -> CovarianceReport:
         covariance_report = CovarianceReport()
         for index, col in enumerate(df.columns):
-            for covar_column in df.columns[index+1:]:
-                covar_value =pl.cov(df[col], df[covar_column], eager=True).item(0)
+            for covar_column in df.columns[index + 1 :]:
+                covar_value = pl.cov(df[col], df[covar_column], eager=True).item(0)
                 covariance_report.add_covariance(col, covar_column, covar_value)
         return covariance_report
 
