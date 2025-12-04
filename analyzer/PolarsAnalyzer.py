@@ -8,9 +8,9 @@ from analyzer.report.DataframeReport import DataframeReport
 from analyzer.report.ColumnReport import ColumnReport
 from analyzer.report.FullReport import FullReport
 
-class PolarsAnalyzer(Analyzer):
 
-    def generate_dataframe_report(self, path:str, df: pl.DataFrame) -> DataframeReport:
+class PolarsAnalyzer(Analyzer):
+    def generate_dataframe_report(self, path: str, df: pl.DataFrame) -> DataframeReport:
         """Generates a report for the entire DataFrame.
         Args:
             df (pl.DataFrame): The Polars DataFrame.
@@ -21,9 +21,12 @@ class PolarsAnalyzer(Analyzer):
             num_columns=df.width,
             column_names=df.columns,
             dtypes={col: str(df[col].dtype) for col in df.columns},
-            missing_values={col: df[col].null_count() for col in df.columns}
+            missing_values={col: df[col].null_count() for col in df.columns},
         )
-    def generate_numeric_column_report(self, col: str, series: pl.Series) -> NumericColumnReport:
+
+    def generate_numeric_column_report(
+        self, col: str, series: pl.Series
+    ) -> NumericColumnReport:
         """Generates a report for numeric columns.
         Args:
             series (pl.Series): The numeric column series.
@@ -37,10 +40,14 @@ class PolarsAnalyzer(Analyzer):
             max_value=series.max(),
             count=series.len(),
             unique_count=series.n_unique(),
-            null_count=series.null_count()
+            null_count=series.null_count(),
         )
-    
-    def generate_string_column_report(self, col: str, series: pl.Series, ) -> StringColumnReport:
+
+    def generate_string_column_report(
+        self,
+        col: str,
+        series: pl.Series,
+    ) -> StringColumnReport:
         """Generates a report for string columns.
         Args:
             series (pl.Series): The string column series.
@@ -49,11 +56,12 @@ class PolarsAnalyzer(Analyzer):
             name=col,
             count=series.len(),
             unique_count=series.n_unique(),
-            null_count=series.null_count()
+            null_count=series.null_count(),
         )
-    
-        
-    def generate_temporal_column_report(self, col:str, series: pl.Series) -> TemporalColumnReport:
+
+    def generate_temporal_column_report(
+        self, col: str, series: pl.Series
+    ) -> TemporalColumnReport:
         """Generates a report for temporal columns.
         Args:
             series (pl.Series): The temporal column series.
@@ -67,7 +75,7 @@ class PolarsAnalyzer(Analyzer):
             max_value=series.max(),
             count=series.len(),
             unique_count=series.n_unique(),
-            null_count=series.null_count()
+            null_count=series.null_count(),
         )
 
     def generate_column_report(self, df) -> list[ColumnReport]:
@@ -76,7 +84,7 @@ class PolarsAnalyzer(Analyzer):
             series = df[col]
 
             # Generate report based on data type
-            report : ColumnReport 
+            report: ColumnReport
             if series.dtype.is_numeric():
                 report = self.generate_numeric_column_report(col, series)
             elif series.dtype == pl.Utf8:
@@ -94,4 +102,3 @@ class PolarsAnalyzer(Analyzer):
         column_report = self.generate_column_report(df)
 
         return FullReport(dataframe_report, column_report)
-    

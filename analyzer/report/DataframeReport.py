@@ -1,6 +1,7 @@
 class DataframeReport:
-    
-    def __init__(self, path, num_rows, num_columns, column_names, dtypes, missing_values):
+    def __init__(
+        self, path, num_rows, num_columns, column_names, dtypes, missing_values
+    ):
         self.path = path
         self.num_rows = num_rows
         self.num_columns = num_columns

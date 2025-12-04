@@ -1,8 +1,19 @@
 from analyzer.report.ColumnReport import ColumnReport
 
-class NumericColumnReport(ColumnReport):
 
-    def __init__(self, name, mean, median, std_dev, min_value, max_value, count, unique_count, null_count):
+class NumericColumnReport(ColumnReport):
+    def __init__(
+        self,
+        name,
+        mean,
+        median,
+        std_dev,
+        min_value,
+        max_value,
+        count,
+        unique_count,
+        null_count,
+    ):
         self.name = name
         self.mean = mean
         self.median = median
@@ -22,5 +33,5 @@ class NumericColumnReport(ColumnReport):
             "max": self.max_value,
             "count": self.count,
             "unique_count": self.unique_count,
-            "null_count": self.null_count
+            "null_count": self.null_count,
         }
