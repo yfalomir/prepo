@@ -2,13 +2,13 @@ from typing import Optional
 import polars as pl
 
 from analyzer.Analyzer import Analyzer
-from analyzer.report.NumericColumnReport import NumericColumnReport
-from analyzer.report.StringColumnReport import StringColumnReport
-from analyzer.report.TemporalColumnReport import TemporalColumnReport
-from analyzer.report.DataframeReport import DataframeReport
-from analyzer.report.ColumnReport import ColumnReport
-from analyzer.report.FullReport import FullReport
-from analyzer.report.CovarianceReport import CovarianceReport
+from report.NumericColumnReport import NumericColumnReport
+from report.StringColumnReport import StringColumnReport
+from report.TemporalColumnReport import TemporalColumnReport
+from report.DataframeReport import DataframeReport
+from report.ColumnReport import ColumnReport
+from report.FullReport import FullReport
+from report.CovarianceReport import CovarianceReport
 from analyzer.utils.FileType import FileType
 
 

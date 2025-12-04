@@ -1,7 +1,7 @@
-from analyzer.report.ColumnReport import ColumnReport
+from report.ColumnReport import ColumnReport
 
 
-class NumericColumnReport(ColumnReport):
+class TemporalColumnReport(ColumnReport):
     def __init__(
         self,
         name,

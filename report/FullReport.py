@@ -1,6 +1,6 @@
-from analyzer.report.DataframeReport import DataframeReport
-from analyzer.report.ColumnReport import ColumnReport
-from analyzer.report.CovarianceReport import CovarianceReport
+from report.DataframeReport import DataframeReport
+from report.ColumnReport import ColumnReport
+from report.CovarianceReport import CovarianceReport
 
 from typing import Optional
 

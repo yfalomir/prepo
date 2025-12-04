@@ -1,4 +1,4 @@
-from analyzer.report.ColumnReport import ColumnReport
+from report.ColumnReport import ColumnReport
 
 
 class StringColumnReport(ColumnReport):
