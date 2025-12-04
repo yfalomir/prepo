@@ -1,7 +1,8 @@
 from abc import ABC
+from pydantic import BaseModel
 
 
-class ColumnReport(ABC):
+class ColumnReport(ABC, BaseModel):
     pass
 
     def __str__(self):

@@ -1,10 +1,10 @@
-class DataframeReport:
-    def __init__(
-        self, path, num_rows, num_columns, column_names, dtypes, missing_values
-    ):
-        self.path = path
-        self.num_rows = num_rows
-        self.num_columns = num_columns
-        self.column_names = column_names
-        self.dtypes = dtypes
-        self.missing_values = missing_values
+from pydantic import BaseModel
+
+
+class DataframeReport(BaseModel):
+    path: str
+    num_rows: int
+    num_columns: int
+    column_names: list[str]
+    dtypes: dict[str, str]
+    missing_values: dict[str, int]

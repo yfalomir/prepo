@@ -1,3 +1,4 @@
+from pydantic import BaseModel, field_validator
 from report.DataframeReport import DataframeReport
 from report.ColumnReport import ColumnReport
 from report.CovarianceReport import CovarianceReport
@@ -5,18 +6,17 @@ from report.CovarianceReport import CovarianceReport
 from typing import Optional
 
 
-class FullReport:
-    def __init__(
-        self,
-        dataframe_report: Optional[DataframeReport] = None,
-        covariance_report: Optional[CovarianceReport] = None,
-        column_reports: Optional[list[ColumnReport]] = None,
-    ):
-        self.dataframe_report: Optional[DataframeReport] = dataframe_report
-        self.covariance_report: Optional[CovarianceReport] = covariance_report
-        self.column_reports: list[ColumnReport] = (
-            [] if column_reports is None else column_reports
-        )
+class FullReport(BaseModel):
+    dataframe_report: Optional[DataframeReport]
+    covariance_report: Optional[CovarianceReport]
+    column_reports: list[ColumnReport]
+
+    @field_validator("column_reports", mode="before")
+    @classmethod
+    def ensure_list(
+        cls, column_reports: Optional[list[ColumnReport]]
+    ) -> list[ColumnReport]:
+        return [] if column_reports is None else column_reports
 
     def add_column_report(self, column_report: ColumnReport):
         self.column_reports.append(column_report)

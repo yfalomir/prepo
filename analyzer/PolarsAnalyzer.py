@@ -106,7 +106,7 @@ class PolarsAnalyzer(Analyzer):
         return column_reports
 
     def generate_covariance_report(self, df) -> CovarianceReport:
-        covariance_report = CovarianceReport()
+        covariance_report = CovarianceReport(covariance_matrix={})
         for index, col in enumerate(df.columns):
             for covar_column in df.columns[index + 1 :]:
                 covar_value = pl.cov(df[col], df[covar_column], eager=True).item(0)
@@ -135,4 +135,8 @@ class PolarsAnalyzer(Analyzer):
         covariance_report = self.generate_covariance_report(df)
         column_report = self.generate_column_report(df)
 
-        return FullReport(dataframe_report, covariance_report, column_report)
+        return FullReport(
+            dataframe_report=dataframe_report,
+            covariance_report=covariance_report,
+            column_reports=column_report,
+        )

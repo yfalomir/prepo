@@ -1,8 +1,8 @@
-class CovarianceReport:
-    def __init__(self, covariance_matrix: dict[str, dict[str, float]] = None):
-        self.covariance_matrix: dict[str, dict[str, float]] = (
-            covariance_matrix if covariance_matrix is not None else {}
-        )
+from pydantic import BaseModel
+
+
+class CovarianceReport(BaseModel):
+    covariance_matrix: dict[str, dict[str, float]]
 
     def add_covariance(self, col1: str, col2: str, value: float):
         if col1 not in self.covariance_matrix:

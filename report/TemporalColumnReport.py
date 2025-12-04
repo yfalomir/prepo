@@ -2,27 +2,15 @@ from report.ColumnReport import ColumnReport
 
 
 class TemporalColumnReport(ColumnReport):
-    def __init__(
-        self,
-        name,
-        mean,
-        median,
-        std_dev,
-        min_value,
-        max_value,
-        count,
-        unique_count,
-        null_count,
-    ):
-        self.name = name
-        self.mean = mean
-        self.median = median
-        self.std_dev = std_dev
-        self.min_value = min_value
-        self.max_value = max_value
-        self.count = count
-        self.unique_count = unique_count
-        self.null_count = null_count
+    name: str
+    mean: float
+    median: float
+    std_dev: float
+    min_value: float
+    max_value: float
+    count: int
+    unique_count: int
+    null_count: int
 
     def to_dict(self):
         return {
