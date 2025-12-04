@@ -9,3 +9,9 @@ repos:
   rev: v8.24.2
   hooks:
       - id: gitleaks
+- repo: https://github.com/commitizen-tools/commitizen
+  rev: v4.9.1
+  hooks:
+    - id: commitizen
+    - id: commitizen-branch
+      stages: [pre-commit]
