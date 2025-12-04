@@ -1,4 +1,4 @@
-# DataDeck Explorer
+# prepo
 
 Multibackend data exploration and preparation tool.
 

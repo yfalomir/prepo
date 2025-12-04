@@ -13,5 +13,6 @@ repos:
   rev: v4.9.1
   hooks:
     - id: commitizen
+      stages: [commit-msg]
     - id: commitizen-branch
-      stages: [pre-commit]
+      stages: [pre-push]
