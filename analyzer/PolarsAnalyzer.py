@@ -1,3 +1,4 @@
+from typing import Optional
 import polars as pl
 
 from analyzer.Analyzer import Analyzer
@@ -7,9 +8,19 @@ from analyzer.report.TemporalColumnReport import TemporalColumnReport
 from analyzer.report.DataframeReport import DataframeReport
 from analyzer.report.ColumnReport import ColumnReport
 from analyzer.report.FullReport import FullReport
+from analyzer.utils.FileType import FileType
 
 
 class PolarsAnalyzer(Analyzer):
+
+    file_type_to_reader : dict[FileType, callable] = {
+        FileType.CSV: pl.read_csv,
+        FileType.JSON: pl.read_json,
+        FileType.PARQUET: pl.read_parquet,
+        FileType.DELTA: pl.read_delta,
+        FileType.EXCEL: pl.read_excel,
+    }
+
     def generate_dataframe_report(self, path: str, df: pl.DataFrame) -> DataframeReport:
         """Generates a report for the entire DataFrame.
         Args:
@@ -94,10 +105,22 @@ class PolarsAnalyzer(Analyzer):
             column_reports.append(report)
         return column_reports
 
-    def analyze_file(self, file_path):
+    def analyze_file(self, file_path: str, file_type: Optional[FileType]) -> FullReport:
         # Read the CSV file using Polars
-        df = pl.read_csv(file_path)
 
+        if file_type:
+            reader = self.file_type_to_reader.get(file_type, pl.read_csv) 
+        elif file_path.endswith(".csv"):
+            reader = pl.read_csv
+        elif file_path.endswith(".json"):
+            reader = pl.read_json
+        elif file_path.endswith(".parquet"):
+            reader = pl.read_parquet
+        elif file_path.endswith(".xlsx") or file_path.endswith(".xls"):
+            reader = pl.read_excel
+
+        df = reader(file_path)
+        
         dataframe_report = self.generate_dataframe_report(file_path, df)
         column_report = self.generate_column_report(df)
 
