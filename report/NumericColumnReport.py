@@ -1,3 +1,5 @@
+"""Specify metrics about a numeric column and how to use them."""
+
 from __future__ import annotations
 from typing import Self
 from alert.Alert import Alert
@@ -5,6 +7,8 @@ from report.ColumnReport import ColumnReport
 
 
 class NumericColumnReport(ColumnReport):
+    """Represents the metrics of a numeric column in a dataframe (Integer, Float, etc.)."""
+
     name: str
     mean: float
     median: float
@@ -21,6 +25,7 @@ class NumericColumnReport(ColumnReport):
         default_percentage_threshold: float = 0.1,
         percentage_threshold_per_column: dict[str, float] = {},
     ) -> list[Alert]:
+        """Calculate metrics difference and return Alerts instances depending on thresholds."""
         super().get_comparison_alerts(
             modified, default_percentage_threshold, percentage_threshold_per_column
         )

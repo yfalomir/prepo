@@ -1,3 +1,5 @@
+"""Specify metrics about a text column and how to use them."""
+
 from __future__ import annotations
 from typing import Self
 from alert.Alert import Alert
@@ -5,6 +7,8 @@ from report.ColumnReport import ColumnReport
 
 
 class StringColumnReport(ColumnReport):
+    """Represents the metrics of a text column in a dataframe (String, Char, etc.)."""
+
     name: str
     count: int
     unique_count: int
@@ -16,6 +20,7 @@ class StringColumnReport(ColumnReport):
         default_percentage_threshold: float = 0.1,
         percentage_threshold_per_column: dict[str, float] = {},
     ) -> list[Alert]:
+        """Calculate metrics difference and return Alerts instances depending on thresholds."""
         super().get_comparison_alerts(
             modified, default_percentage_threshold, percentage_threshold_per_column
         )

@@ -1,12 +1,17 @@
+"""Specify metrics about covariances inside a dataframe."""
+
 from pydantic import BaseModel
 
 from alert.Alert import Alert
 
 
 class CovarianceReport(BaseModel):
+    """Represents the covariances between columns of a dataframe."""
+
     covariance_matrix: dict[str, dict[str, float]]
 
     def add_covariance(self, col1: str, col2: str, value: float):
+        """Add covariance value between two columns to covariance_matrix."""
         if col1 not in self.covariance_matrix:
             self.covariance_matrix[col1] = {}
         self.covariance_matrix[col1][col2] = value
@@ -31,8 +36,8 @@ class CovarianceReport(BaseModel):
         default_percentage_threshold: float = 0.1,
         percentage_threshold_per_column: dict[str, dict[str, float]] = {},
     ) -> list[Alert]:
+        """Calculate metrics difference and return Alerts instances depending on thresholds."""
         alerts = []
-
         for left_column in self.covariance_matrix:
             for right_column in [
                 column for column in self.covariance_matrix[left_column] if column > left_column
@@ -54,7 +59,9 @@ class CovarianceReport(BaseModel):
                 ):
                     alerts.append(
                         Alert(
-                            f"Covariance for columns {left_column} and {right_column} changed from {original_covariance} to {modified_covariance}",
+                            f"Covariance for columns {left_column} and "
+                            f"{right_column} changed from {original_covariance} "
+                            f"to {modified_covariance}",
                             level="warning",
                         )
                     )

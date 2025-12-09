@@ -1,3 +1,5 @@
+"""Specify metrics about a temporal column and how to use them."""
+
 from __future__ import annotations
 from typing import Self
 from alert.Alert import Alert
@@ -5,6 +7,8 @@ from report.ColumnReport import ColumnReport
 
 
 class TemporalColumnReport(ColumnReport):
+    """Represents the metrics of a Temporal column in a dataframe (Date, Timestamp, etc.)."""
+
     name: str
     mean: float
     median: float
@@ -15,24 +19,13 @@ class TemporalColumnReport(ColumnReport):
     unique_count: int
     null_count: int
 
-    def to_dict(self):
-        return {
-            "mean": self.mean,
-            "median": self.median,
-            "std_dev": self.std_dev,
-            "min": self.min_value,
-            "max": self.max_value,
-            "count": self.count,
-            "unique_count": self.unique_count,
-            "null_count": self.null_count,
-        }
-
     def get_comparison_alerts(
         self,
         modified: Self,
         default_percentage_threshold: float = 0.1,
         percentage_threshold_per_column: dict[str, float] = {},
     ) -> list[Alert]:
+        """Calculate metrics difference and return Alerts instances depending on thresholds."""
         super().get_comparison_alerts(
             modified, default_percentage_threshold, percentage_threshold_per_column
         )

@@ -1,3 +1,5 @@
+"""Calulates metrics and reports about files using Polars."""
+
 from typing import Callable, Optional
 import polars as pl
 
@@ -13,6 +15,8 @@ from analyzer.utils.FileType import FileType
 
 
 class PolarsAnalyzer(Analyzer):
+    """Calulates metrics and reports about files using Polars."""
+
     file_type_to_reader: dict[FileType, Callable] = {
         FileType.CSV: pl.read_csv,
         FileType.JSON: pl.read_json,
@@ -22,10 +26,7 @@ class PolarsAnalyzer(Analyzer):
     }
 
     def generate_dataframe_report(self, path: str, df: pl.DataFrame) -> DataframeReport:
-        """Generates a report for the entire DataFrame.
-        Args:
-            df (pl.DataFrame): The Polars DataFrame.
-            Returns:"""
+        """Calculate a report about the dataframe."""
         return DataframeReport(
             path=path,
             num_rows=df.height,
@@ -36,10 +37,7 @@ class PolarsAnalyzer(Analyzer):
         )
 
     def generate_numeric_column_report(self, col: str, series: pl.Series) -> NumericColumnReport:
-        """Generates a report for numeric columns.
-        Args:
-            series (pl.Series): The numeric column series.
-            Returns:"""
+        """Calculate a report for a numeric columns."""
         return NumericColumnReport(
             name=col,
             mean=series.mean(),
@@ -57,10 +55,7 @@ class PolarsAnalyzer(Analyzer):
         col: str,
         series: pl.Series,
     ) -> StringColumnReport:
-        """Generates a report for string columns.
-        Args:
-            series (pl.Series): The string column series.
-            Returns:"""
+        """Calculate a report for a text column."""
         return StringColumnReport(
             name=col,
             count=series.len(),
@@ -69,10 +64,7 @@ class PolarsAnalyzer(Analyzer):
         )
 
     def generate_temporal_column_report(self, col: str, series: pl.Series) -> TemporalColumnReport:
-        """Generates a report for temporal columns.
-        Args:
-            series (pl.Series): The temporal column series.
-            Returns:"""
+        """Calculate a report for a temporal column."""
         return TemporalColumnReport(
             name=col,
             mean=series.mean(),
@@ -86,6 +78,7 @@ class PolarsAnalyzer(Analyzer):
         )
 
     def generate_column_report(self, df) -> list[ColumnReport]:
+        """Return adequate ColumnReport instances for each column."""
         column_reports: list[ColumnReport] = []
         for col in df.columns:
             series = df[col]
@@ -102,6 +95,7 @@ class PolarsAnalyzer(Analyzer):
         return column_reports
 
     def generate_covariance_report(self, df) -> CovarianceReport:
+        """Calculate covariance between each pair of columns."""
         covariance_report = CovarianceReport(covariance_matrix={})
         for index, col in enumerate(df.columns):
             for covar_column in df.columns[index + 1 :]:
@@ -110,8 +104,7 @@ class PolarsAnalyzer(Analyzer):
         return covariance_report
 
     def analyze_file(self, file_path: str, file_type: Optional[FileType] = None) -> FullReport:
-        # Read the CSV file using Polars
-
+        """Analyze a file and generate a FullReport the data."""
         if file_type:
             reader = self.file_type_to_reader.get(file_type, pl.read_csv)
         elif file_path.endswith(".csv"):

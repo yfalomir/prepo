@@ -1,3 +1,5 @@
+"""Orchestrate and aggregate reports and metrics about a dataframe."""
+
 from pydantic import BaseModel, field_validator
 from alert.Alert import Alert
 from report.DataframeReport import DataframeReport
@@ -8,6 +10,8 @@ from typing import Optional
 
 
 class FullReport(BaseModel):
+    """Represents a comprehensive report including dataframe, covariance, and column reports."""
+
     dataframe_report: DataframeReport
     covariance_report: CovarianceReport
     column_reports: list[ColumnReport]
@@ -15,12 +19,15 @@ class FullReport(BaseModel):
     @field_validator("column_reports", mode="before")
     @classmethod
     def ensure_list(cls, column_reports: Optional[list[ColumnReport]]) -> list[ColumnReport]:
+        """Validate column_reports is a list, even if None is provided."""
         return [] if column_reports is None else column_reports
 
     def add_column_report(self, column_report: ColumnReport):
+        """Add a column report to the column_reports."""
         self.column_reports.append(column_report)
 
     def set_dataframe_report(self, dataframe_report: DataframeReport):
+        """Set dataframe_report."""
         self.dataframe_report = dataframe_report
 
     def __str__(self):
@@ -66,6 +73,7 @@ class FullReport(BaseModel):
         default_percentage_threshold: float = 0.1,
         percentage_threshold_per_column: dict[str, float] = {},
     ) -> list[Alert]:
+        """Return Alerts about the dataframe."""
         return self.dataframe_report.get_comparison_alerts(
             modified=modified_dataframe_report,
             default_percentage_threshold=default_percentage_threshold,
@@ -78,6 +86,7 @@ class FullReport(BaseModel):
         default_percentage_threshold: float = 0.1,
         percentage_threshold_per_column: dict[str, dict[str, float]] = {},
     ) -> list[Alert]:
+        """Return Alerts about the covariances."""
         return self.covariance_report.get_comparison_alerts(
             modified=modified_covariance_report,
             default_percentage_threshold=default_percentage_threshold,
@@ -90,6 +99,7 @@ class FullReport(BaseModel):
         default_percentage_threshold: float = 0.1,
         percentage_threshold_per_column: dict[str, dict[str, float]] = {},
     ) -> list[Alert]:
+        """Return Alerts about all the columns."""
         alerts = []
         original_columns = {col.name: col for col in self.column_reports}
         modified_columns = {col.name: col for col in modified_column_reports}
@@ -116,6 +126,7 @@ class FullReport(BaseModel):
         percentage_threshold_per_column: dict[str, dict[str, float]] = {},
         percentage_threshold_per_covariance: dict[str, dict[str, float]] = {},
     ) -> list[Alert]:
+        """Return Alerts about all the sub-reports."""
         alerts = []
 
         alerts.extend(

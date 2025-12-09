@@ -2,7 +2,7 @@ from report.TemporalColumnReport import TemporalColumnReport
 
 
 def test_temporal_column_report_comparison():
-    original_numeric_column_report = TemporalColumnReport(
+    original_string_column_report = TemporalColumnReport(
         name="original",
         mean=10,
         median=100,
@@ -13,7 +13,7 @@ def test_temporal_column_report_comparison():
         unique_count=10,
         null_count=5,
     )
-    modified_numeric_column_report = TemporalColumnReport(
+    modified_string_column_report = TemporalColumnReport(
         name="modified",
         mean=2,
         median=200,
@@ -25,8 +25,8 @@ def test_temporal_column_report_comparison():
         null_count=500,
     )
 
-    alerts = original_numeric_column_report.get_comparison_alerts(
-        modified=modified_numeric_column_report, default_percentage_threshold=0.1
+    alerts = original_string_column_report.get_comparison_alerts(
+        modified=modified_string_column_report, default_percentage_threshold=0.1
     )
 
     assert len(alerts) == 8
