@@ -7,16 +7,23 @@ requires-python = ">=3.14"
 dependencies = [
     "duckdb>=1.4.1",
     "polars>=1.35.2",
-    "pre-commit>=4.5.0",
     "pydantic>=2.12.5",
-    "pytest>=9.0.1",
+]
+
+[project.optional-dependencies]
+extra-data-types = [
+    "deltalake>=1.2.1",
+    "fastexcel>=0.18.0",
 ]
 
 [dependency-groups]
 dev = [
+    "deltalake>=1.2.1",
+    "fastexcel>=0.18.0",
     "mypy>=1.18.2",
+    "pre-commit>=4.5.0",
+    "pytest>=9.0.1",
     "ruff>=0.14.4",
-
 ]
 [tool.ruff]
 # But use a different line length.

@@ -1,7 +1,7 @@
 .PHONY: ruff-fix
 ruff-fix:
-	uv run ruff check --fix prepo; \
-	uv run ruff format prepo
+	uv run ruff check --fix prepo tests; \
+	uv run ruff format prepo tests
 
 
 .PHONY: test
