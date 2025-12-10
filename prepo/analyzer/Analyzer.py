@@ -3,8 +3,8 @@
 from abc import ABC, abstractmethod
 from typing import Optional
 
-from analyzer.utils.FileType import FileType
-from report.FullReport import FullReport
+from prepo.analyzer.utils.FileType import FileType
+from prepo.report.FullReport import FullReport
 
 
 class Analyzer(ABC):

@@ -1,4 +1,4 @@
-from report.StringColumnReport import StringColumnReport
+from prepo.report.StringColumnReport import StringColumnReport
 
 
 def test_string_column_report_comparison():

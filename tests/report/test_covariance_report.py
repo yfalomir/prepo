@@ -1,4 +1,4 @@
-from report.CovarianceReport import CovarianceReport
+from prepo.report.CovarianceReport import CovarianceReport
 
 
 def test_dataframe_report_comparison():

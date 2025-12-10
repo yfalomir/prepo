@@ -1,13 +1,14 @@
-"""Specify metrics about a numeric column and how to use them."""
+"""Specify metrics about a temporal column and how to use them."""
 
 from __future__ import annotations
 from typing import Self
-from alert.Alert import Alert
-from report.ColumnReport import ColumnReport
+
+from prepo.alert.Alert import Alert
+from prepo.report.ColumnReport import ColumnReport
 
 
-class NumericColumnReport(ColumnReport):
-    """Represents the metrics of a numeric column in a dataframe (Integer, Float, etc.)."""
+class TemporalColumnReport(ColumnReport):
+    """Represents the metrics of a Temporal column in a dataframe (Date, Timestamp, etc.)."""
 
     name: str
     mean: float

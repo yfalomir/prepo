@@ -1,4 +1,4 @@
-from report.DataframeReport import DataframeReport
+from prepo.report.DataframeReport import DataframeReport
 
 
 def test_dataframe_report_comparison():

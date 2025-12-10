@@ -1,6 +1,6 @@
-from analyzer.PolarsAnalyzer import PolarsAnalyzer
-from report.CovarianceReport import CovarianceReport
-from report.FullReport import FullReport
+from prepo.analyzer.PolarsAnalyzer import PolarsAnalyzer
+from prepo.report.CovarianceReport import CovarianceReport
+from prepo.report.FullReport import FullReport
 
 
 def test_polars_analyzer_csv_file(sample_csv_file_path):

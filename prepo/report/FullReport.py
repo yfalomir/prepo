@@ -1,12 +1,12 @@
 """Orchestrate and aggregate reports and metrics about a dataframe."""
 
 from pydantic import BaseModel, field_validator
-from alert.Alert import Alert
-from report.DataframeReport import DataframeReport
-from report.ColumnReport import ColumnReport
-from report.CovarianceReport import CovarianceReport
-
 from typing import Optional
+
+from prepo.alert.Alert import Alert
+from prepo.report.DataframeReport import DataframeReport
+from prepo.report.ColumnReport import ColumnReport
+from prepo.report.CovarianceReport import CovarianceReport
 
 
 class FullReport(BaseModel):

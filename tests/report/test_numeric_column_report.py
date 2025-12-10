@@ -1,4 +1,4 @@
-from report.NumericColumnReport import NumericColumnReport
+from prepo.report.NumericColumnReport import NumericColumnReport
 
 
 def test_numeric_column_report_comparison():

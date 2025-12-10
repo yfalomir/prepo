@@ -1,4 +1,4 @@
-from report.TemporalColumnReport import TemporalColumnReport
+from prepo.report.TemporalColumnReport import TemporalColumnReport
 
 
 def test_temporal_column_report_comparison():

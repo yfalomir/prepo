@@ -1,20 +1,16 @@
-"""Specify metrics about a temporal column and how to use them."""
+"""Specify metrics about a text column and how to use them."""
 
 from __future__ import annotations
 from typing import Self
-from alert.Alert import Alert
-from report.ColumnReport import ColumnReport
+
+from prepo.alert.Alert import Alert
+from prepo.report.ColumnReport import ColumnReport
 
 
-class TemporalColumnReport(ColumnReport):
-    """Represents the metrics of a Temporal column in a dataframe (Date, Timestamp, etc.)."""
+class StringColumnReport(ColumnReport):
+    """Represents the metrics of a text column in a dataframe (String, Char, etc.)."""
 
     name: str
-    mean: float
-    median: float
-    std_dev: float
-    min_value: float
-    max_value: float
     count: int
     unique_count: int
     null_count: int
@@ -31,11 +27,6 @@ class TemporalColumnReport(ColumnReport):
         )
 
         metrics_map = {
-            "mean": "Mean",
-            "median": "Median",
-            "std_dev": "Standard deviation",
-            "min_value": "Minimum value",
-            "max_value": "Maximum value",
             "count": "Row count value",
             "unique_count": "Unique values count",
             "null_count": "Null count",
