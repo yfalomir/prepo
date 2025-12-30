@@ -7,3 +7,8 @@ ruff-fix:
 .PHONY: test
 test:
 	pytest tests/
+
+
+.PHONY: api-dev
+api-dev:
+	uv run fastapi dev prepo/api/api.py

@@ -12,6 +12,8 @@ from .report.NumericColumnReport import NumericColumnReport
 from .report.TemporalColumnReport import TemporalColumnReport
 from .report.StringColumnReport import StringColumnReport
 
+from .api.api import app
+
 __all__ = [
     "PolarsAnalyzer",
     "Alert",

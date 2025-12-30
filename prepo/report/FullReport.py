@@ -1,6 +1,6 @@
 """Orchestrate and aggregate reports and metrics about a dataframe."""
 
-from pydantic import BaseModel, field_validator
+from pydantic import BaseModel, SerializeAsAny, field_validator
 from typing import Optional
 
 from prepo.alert.Alert import Alert
@@ -14,7 +14,7 @@ class FullReport(BaseModel):
 
     dataframe_report: DataframeReport
     covariance_report: CovarianceReport
-    column_reports: list[ColumnReport]
+    column_reports: list[SerializeAsAny[ColumnReport]]
 
     @field_validator("column_reports", mode="before")
     @classmethod
