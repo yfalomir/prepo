@@ -22,3 +22,8 @@ def test_polars_analyzer_file(request, file_path_fixture):
     assert isinstance(polars_full_report.covariance_report, CovarianceReport)
     assert isinstance(polars_full_report.column_reports, list)
     assert len(polars_full_report.column_reports) == 13
+
+
+def test_unsupported_file_type():
+    with pytest.raises(ValueError):
+        PolarsAnalyzer().analyze_file("test_file.prt")
