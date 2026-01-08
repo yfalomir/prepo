@@ -11,6 +11,7 @@ from .report.ColumnReport import ColumnReport
 from .report.NumericColumnReport import NumericColumnReport
 from .report.TemporalColumnReport import TemporalColumnReport
 from .report.StringColumnReport import StringColumnReport
+from .report.BooleanColumnReport import BooleanColumnReport
 
 from .api.api import app
 
@@ -24,4 +25,5 @@ __all__ = [
     "NumericColumnReport",
     "TemporalColumnReport",
     "StringColumnReport",
+    "BooleanColumnReport",
 ]
