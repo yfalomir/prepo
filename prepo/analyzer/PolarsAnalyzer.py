@@ -5,6 +5,7 @@ import polars as pl
 
 from prepo.analyzer.Analyzer import Analyzer
 from prepo.analyzer.utils.FileType import FileType
+from prepo.report.BooleanColumnReport import BooleanColumnReport
 from prepo.report.NumericColumnReport import NumericColumnReport
 from prepo.report.StringColumnReport import StringColumnReport
 from prepo.report.TemporalColumnReport import TemporalColumnReport
@@ -77,6 +78,19 @@ class PolarsAnalyzer(Analyzer):
             null_count=series.null_count(),
         )
 
+    def generate_boolean_column_report(self, col: str, series: pl.Series) -> BooleanColumnReport:
+        """Calculate a report for a boolean column."""
+        true_count = series.sum()
+        null_count = series.null_count()
+        return BooleanColumnReport(
+            name=col,
+            true_proportion=true_count / series.len(),
+            false_proportion=1 - (true_count + null_count) / series.len(),
+            count=series.len(),
+            unique_count=series.n_unique(),
+            null_count=series.null_count(),
+        )
+
     def generate_column_report(self, df) -> list[ColumnReport]:
         """Return adequate ColumnReport instances for each column."""
         column_reports: list[ColumnReport] = []
@@ -91,6 +105,8 @@ class PolarsAnalyzer(Analyzer):
                 report = self.generate_string_column_report(col, series)
             elif series.dtype in (pl.Date, pl.Time, pl.Duration):
                 report = self.generate_temporal_column_report(col, series)
+            elif series.dtype == pl.Boolean:
+                report = self.generate_boolean_column_report(col, series)
             column_reports.append(report)
         return column_reports
 
