@@ -5,6 +5,7 @@ import polars as pl
 
 from prepo.analyzer.Analyzer import Analyzer
 from prepo.analyzer.utils.FileType import FileType
+from prepo.report.BooleanColumnReport import BooleanColumnReport
 from prepo.report.NumericColumnReport import NumericColumnReport
 from prepo.report.StringColumnReport import StringColumnReport
 from prepo.report.TemporalColumnReport import TemporalColumnReport
@@ -77,12 +78,25 @@ class PolarsAnalyzer(Analyzer):
             null_count=series.null_count(),
         )
 
+    def generate_boolean_column_report(self, col: str, series: pl.Series) -> BooleanColumnReport:
+        """Calculate a report for a boolean column."""
+        true_count = series.sum()
+        null_count = series.null_count()
+        return BooleanColumnReport(
+            name=col,
+            true_proportion=true_count / series.len(),
+            false_proportion=1 - (true_count + null_count) / series.len(),
+            count=series.len(),
+            unique_count=series.n_unique(),
+            null_count=series.null_count(),
+        )
+
     def generate_column_report(self, df) -> list[ColumnReport]:
         """Return adequate ColumnReport instances for each column."""
         column_reports: list[ColumnReport] = []
         for col in df.columns:
             series = df[col]
-
+            report: ColumnReport
             # Generate report based on data type
             if series.dtype.is_numeric():
                 report = self.generate_numeric_column_report(col, series)
@@ -93,6 +107,8 @@ class PolarsAnalyzer(Analyzer):
                 or series.dtype.base_type() == pl.Datetime
             ):
                 report = self.generate_temporal_column_report(col, series)
+            elif series.dtype == pl.Boolean:
+                report = self.generate_boolean_column_report(col, series)
             else:
                 continue  # Skip unsupported types (Boolean, Categorical, etc.)
 

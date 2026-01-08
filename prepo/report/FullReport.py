@@ -6,6 +6,7 @@ from typing import Annotated, Optional, Union
 
 
 from prepo.alert.Alert import Alert
+from prepo.report.BooleanColumnReport import BooleanColumnReport
 from prepo.report.NumericColumnReport import NumericColumnReport
 from prepo.report.StringColumnReport import StringColumnReport
 from prepo.report.TemporalColumnReport import TemporalColumnReport
@@ -13,7 +14,7 @@ from prepo.report.DataframeReport import DataframeReport
 from prepo.report.CovarianceReport import CovarianceReport
 
 AnyColumnReport = Annotated[
-    Union[NumericColumnReport, StringColumnReport, TemporalColumnReport],
+    Union[NumericColumnReport, StringColumnReport, TemporalColumnReport, BooleanColumnReport],
     Field(discriminator="report_type"),
 ]
 

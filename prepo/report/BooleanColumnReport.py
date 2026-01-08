@@ -1,7 +1,7 @@
 """Specify metrics about a boolean column and how to use them."""
 
 from __future__ import annotations
-from typing import Self
+from typing_extensions import Literal, Self
 
 from prepo.alert.Alert import Alert
 from prepo.report.ColumnReport import ColumnReport
@@ -11,6 +11,7 @@ class BooleanColumnReport(ColumnReport):
     """Represents the metrics of a boolean column."""
 
     name: str
+    report_type: Literal["boolean"] = "boolean"
     true_proportion: float
     false_proportion: float
     count: int
