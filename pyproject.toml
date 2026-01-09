@@ -46,5 +46,3 @@ plugins = ['pydantic.mypy']
 requires = ["setuptools>=68.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
-[tool.setuptools]
-packages = ["prepo"]
