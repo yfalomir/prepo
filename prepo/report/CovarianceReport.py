@@ -1,5 +1,6 @@
 """Specify metrics about covariances inside a dataframe."""
 
+from __future__ import annotations
 from pydantic import BaseModel
 
 from prepo.alert.Alert import Alert

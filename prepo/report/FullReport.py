@@ -1,7 +1,9 @@
 """Orchestrate and aggregate reports and metrics about a dataframe."""
 
+from __future__ import annotations
 from pydantic import BaseModel, SerializeAsAny, field_validator
 from typing import Optional
+
 
 from prepo.alert.Alert import Alert
 from prepo.report.DataframeReport import DataframeReport
