@@ -1,7 +1,8 @@
 """Specify metrics about a column and how to use them."""
 
 from abc import ABC, abstractmethod
-from typing import Dict, Self
+from typing import Dict
+from typing_extensions import Self
 from pydantic import BaseModel
 
 from prepo.alert.Alert import Alert

@@ -1,7 +1,7 @@
 """Specify metrics about a text column and how to use them."""
 
 from __future__ import annotations
-from typing import Self
+from typing_extensions import Self
 
 from prepo.alert.Alert import Alert
 from prepo.report.ColumnReport import ColumnReport
