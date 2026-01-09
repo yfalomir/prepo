@@ -1,5 +1,6 @@
 """Specify metrics about a dataframe and how to use them."""
 
+from __future__ import annotations
 from pydantic import BaseModel
 
 from prepo.alert.Alert import Alert
