@@ -117,6 +117,12 @@ class PolarsAnalyzer(Analyzer):
         elif file_path.endswith(".xlsx") or file_path.endswith(".xls"):
             reader = pl.read_excel
 
+        if not reader:
+            raise ValueError(
+                f"Unsupported file type for file: {file_path}. "
+                f"Available file types: {', '.join([x.value for x in FileType])}"
+            )
+
         df = reader(file_path)
 
         return self.analyze_df(file_path, df)
