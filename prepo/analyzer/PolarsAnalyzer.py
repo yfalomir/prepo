@@ -104,7 +104,8 @@ class PolarsAnalyzer(Analyzer):
         return covariance_report
 
     def analyze_file(self, file_path: str, file_type: Optional[FileType] = None) -> FullReport:
-        """Analyze a file and generate a FullReport the data."""
+        """Analyze a file and generate a FullReport from the data."""
+        reader = None
         if file_type:
             reader = self.file_type_to_reader.get(file_type, pl.read_csv)
         elif file_path.endswith(".csv"):
@@ -118,7 +119,11 @@ class PolarsAnalyzer(Analyzer):
 
         df = reader(file_path)
 
-        dataframe_report = self.generate_dataframe_report(file_path, df)
+        return self.analyze_df(file_path, df)
+
+    def analyze_df(self, name: str, df: pl.DataFrame) -> FullReport:
+        """Analyze a polars dataframe."""
+        dataframe_report = self.generate_dataframe_report(name, df)
         covariance_report = self.generate_covariance_report(df)
         column_report = self.generate_column_report(df)
 

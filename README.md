@@ -1,10 +1,7 @@
 # prepo
 
-Multibackend data exploration and preparation tool.
-It produces structured analysis reports for dataframes and columns, and can compare reports to detect significant statistical shifts.
-
-Backend currently supported:
-- Polars
+Statistical data drift, data exploration and preparation tool.
+prepo produces structured analysis reports for dataframes and columns, and can compare reports to detect significant statistical shifts.
 
 ## Documentation
 
@@ -35,7 +32,6 @@ Each comparison alert getter allows definition of metric-wise thresholds and def
 
 ### Output & Integration
 Reports are subclasses of Pydantic BaseModel to allow JSON-serialization and export for future use and storage.
-
 
 ## Examples
 Analyze a file and retrieve metrics about the dataframe and its columns.
