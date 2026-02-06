@@ -9,6 +9,7 @@ client = TestClient(app)
 def test_full_report():
     response = client.get("/fullreport", params={"path": "tests/test_data/titanic_truncated.csv"})
     assert response.status_code == 200
+    print(response.json())
     assert response.json() == {
         "dataframe_report": {
             "path": "tests/test_data/titanic_truncated.csv",
@@ -249,6 +250,7 @@ def test_full_report():
         "column_reports": [
             {
                 "name": "PassengerId",
+                "report_type": "numeric",
                 "mean": 25.0,
                 "median": 25.0,
                 "std_dev": 14.288690166235206,
@@ -260,6 +262,7 @@ def test_full_report():
             },
             {
                 "name": "Survived",
+                "report_type": "numeric",
                 "mean": 0.4489795918367347,
                 "median": 0.0,
                 "std_dev": 0.5025445456953673,
@@ -271,6 +274,7 @@ def test_full_report():
             },
             {
                 "name": "Pclass",
+                "report_type": "numeric",
                 "mean": 2.4285714285714284,
                 "median": 3.0,
                 "std_dev": 0.816496580927726,
@@ -280,10 +284,23 @@ def test_full_report():
                 "unique_count": 3,
                 "null_count": 0,
             },
-            {"name": "Name", "count": 49, "unique_count": 49, "null_count": 0},
-            {"name": "Sex", "count": 49, "unique_count": 2, "null_count": 0},
+            {
+                "name": "Name",
+                "report_type": "string",
+                "count": 49,
+                "unique_count": 49,
+                "null_count": 0,
+            },
+            {
+                "name": "Sex",
+                "report_type": "string",
+                "count": 49,
+                "unique_count": 2,
+                "null_count": 0,
+            },
             {
                 "name": "Age",
+                "report_type": "numeric",
                 "mean": 27.742857142857144,
                 "median": 27.0,
                 "std_dev": 16.15247724060936,
@@ -295,6 +312,7 @@ def test_full_report():
             },
             {
                 "name": "SibSp",
+                "report_type": "numeric",
                 "mean": 0.673469387755102,
                 "median": 0.0,
                 "std_dev": 0.9658276912843722,
@@ -306,6 +324,7 @@ def test_full_report():
             },
             {
                 "name": "Parch",
+                "report_type": "numeric",
                 "mean": 0.40816326530612246,
                 "median": 0.0,
                 "std_dev": 1.0976939340221916,
@@ -315,9 +334,16 @@ def test_full_report():
                 "unique_count": 4,
                 "null_count": 0,
             },
-            {"name": "Ticket", "count": 49, "unique_count": 48, "null_count": 0},
+            {
+                "name": "Ticket",
+                "report_type": "string",
+                "count": 49,
+                "unique_count": 48,
+                "null_count": 0,
+            },
             {
                 "name": "Fare",
+                "report_type": "numeric",
                 "mean": 28.101444897959183,
                 "median": 15.5,
                 "std_dev": 42.316295419407,
@@ -327,8 +353,26 @@ def test_full_report():
                 "unique_count": 39,
                 "null_count": 0,
             },
-            {"name": "Cabin", "count": 49, "unique_count": 10, "null_count": 40},
-            {"name": "Embarked", "count": 49, "unique_count": 3, "null_count": 0},
-            {"name": "tpst", "count": 49, "unique_count": 48, "null_count": 0},
+            {
+                "name": "Cabin",
+                "report_type": "string",
+                "count": 49,
+                "unique_count": 10,
+                "null_count": 40,
+            },
+            {
+                "name": "Embarked",
+                "report_type": "string",
+                "count": 49,
+                "unique_count": 3,
+                "null_count": 0,
+            },
+            {
+                "name": "tpst",
+                "report_type": "string",
+                "count": 49,
+                "unique_count": 48,
+                "null_count": 0,
+            },
         ],
     }

@@ -1,14 +1,21 @@
 """Orchestrate and aggregate reports and metrics about a dataframe."""
 
 from __future__ import annotations
-from pydantic import BaseModel, SerializeAsAny, field_validator
-from typing import Optional
+from pydantic import BaseModel, Field, SerializeAsAny, field_validator
+from typing import Annotated, Optional, Union
 
 
 from prepo.alert.Alert import Alert
+from prepo.report.NumericColumnReport import NumericColumnReport
+from prepo.report.StringColumnReport import StringColumnReport
+from prepo.report.TemporalColumnReport import TemporalColumnReport
 from prepo.report.DataframeReport import DataframeReport
-from prepo.report.ColumnReport import ColumnReport
 from prepo.report.CovarianceReport import CovarianceReport
+
+AnyColumnReport = Annotated[
+    Union[NumericColumnReport, StringColumnReport, TemporalColumnReport],
+    Field(discriminator="report_type"),
+]
 
 
 class FullReport(BaseModel):
@@ -16,15 +23,16 @@ class FullReport(BaseModel):
 
     dataframe_report: DataframeReport
     covariance_report: CovarianceReport
-    column_reports: list[SerializeAsAny[ColumnReport]]
+
+    column_reports: list[SerializeAsAny[AnyColumnReport]]
 
     @field_validator("column_reports", mode="before")
     @classmethod
-    def ensure_list(cls, column_reports: Optional[list[ColumnReport]]) -> list[ColumnReport]:
+    def ensure_list(cls, column_reports: Optional[list[AnyColumnReport]]) -> list[AnyColumnReport]:
         """Validate column_reports is a list, even if None is provided."""
         return [] if column_reports is None else column_reports
 
-    def add_column_report(self, column_report: ColumnReport):
+    def add_column_report(self, column_report: AnyColumnReport):
         """Add a column report to the column_reports."""
         self.column_reports.append(column_report)
 
@@ -97,7 +105,7 @@ class FullReport(BaseModel):
 
     def get_column_comparison_alerts(
         self,
-        modified_column_reports: list[ColumnReport],
+        modified_column_reports: list[AnyColumnReport],
         default_percentage_threshold: float = 0.1,
         percentage_threshold_per_column: dict[str, dict[str, float]] = {},
     ) -> list[Alert]:
@@ -108,9 +116,9 @@ class FullReport(BaseModel):
 
         for col_name, original_col in original_columns.items():
             modified_col = modified_columns.get(col_name)
-            if modified_col:
+            if modified_col and isinstance(original_col, type(modified_col)):
                 col_alerts = original_col.get_comparison_alerts(
-                    modified=modified_col,
+                    modified=modified_col,  # type: ignore
                     default_percentage_threshold=default_percentage_threshold,
                     percentage_threshold_per_column=percentage_threshold_per_column.get(
                         col_name, {}
