@@ -1,7 +1,6 @@
 """Specify metrics about covariances inside a dataframe."""
 
 from __future__ import annotations
-from typing import Union
 from pydantic import BaseModel
 
 from prepo.alert.Alert import Alert
@@ -10,7 +9,7 @@ from prepo.alert.Alert import Alert
 class CovarianceReport(BaseModel):
     """Represents the covariances between columns of a dataframe."""
 
-    covariance_matrix: dict[str, dict[str, Union[float, None]]]
+    covariance_matrix: dict[str, dict[str, float]]
 
     def add_covariance(self, col1: str, col2: str, value: float):
         """Add covariance value between two columns to covariance_matrix."""

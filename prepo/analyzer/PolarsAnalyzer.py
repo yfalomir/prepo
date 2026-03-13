@@ -95,10 +95,11 @@ class PolarsAnalyzer(Analyzer):
         return column_reports
 
     def generate_covariance_report(self, df) -> CovarianceReport:
-        """Calculate covariance between each pair of columns."""
+        """Calculate covariance between each pair of numeric columns."""
+        numeric_cols = [col for col in df.columns if df[col].dtype.is_numeric()]
         covariance_report = CovarianceReport(covariance_matrix={})
-        for index, col in enumerate(df.columns):
-            for covar_column in df.columns[index + 1 :]:
+        for index, col in enumerate(numeric_cols):
+            for covar_column in numeric_cols[index + 1 :]:
                 covar_value = pl.cov(df[col], df[covar_column], eager=True).item(0)
                 covariance_report.add_covariance(col, covar_column, covar_value)
         return covariance_report
