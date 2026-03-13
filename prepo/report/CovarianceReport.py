@@ -13,12 +13,16 @@ class CovarianceReport(BaseModel):
 
     def add_covariance(self, col1: str, col2: str, value: float):
         """Add covariance value between two columns to covariance_matrix."""
+        if value is None:
+            raise ValueError(f"Covariance value cannot be None for ({col1}, {col2})")
+
         if col1 not in self.covariance_matrix:
             self.covariance_matrix[col1] = {}
-        self.covariance_matrix[col1][col2] = value
 
         if col2 not in self.covariance_matrix:
             self.covariance_matrix[col2] = {}
+
+        self.covariance_matrix[col1][col2] = value
         self.covariance_matrix[col2][col1] = value
 
     def __str__(self):
@@ -55,7 +59,7 @@ class CovarianceReport(BaseModel):
                     right_column, default_percentage_threshold
                 )
                 if (
-                    abs(modified_covariance - original_covariance) / original_covariance
+                    abs(modified_covariance - original_covariance) / max(1, original_covariance)
                     > alert_threshold
                 ):
                     alerts.append(

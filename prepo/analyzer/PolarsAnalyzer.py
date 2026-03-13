@@ -84,13 +84,18 @@ class PolarsAnalyzer(Analyzer):
             series = df[col]
 
             # Generate report based on data type
-            report: ColumnReport
             if series.dtype.is_numeric():
                 report = self.generate_numeric_column_report(col, series)
             elif series.dtype == pl.Utf8:
                 report = self.generate_string_column_report(col, series)
-            elif series.dtype in (pl.Date, pl.Time, pl.Duration):
+            elif (
+                series.dtype in (pl.Date, pl.Time, pl.Duration)
+                or series.dtype.base_type() == pl.Datetime
+            ):
                 report = self.generate_temporal_column_report(col, series)
+            else:
+                continue  # Skip unsupported types (Boolean, Categorical, etc.)
+
             column_reports.append(report)
         return column_reports
 

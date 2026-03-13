@@ -16,7 +16,7 @@ class ColumnReport(ABC, BaseModel):
     name: str
 
     def __str__(self):
-        return "\n".join(f"{attr}: {value}" for attr, value in self.to_dict().items())
+        return "\n".join(f"{attr}: {value}" for attr, value in self.model_dump().items())
 
     def _calculate_change_alert(
         self,
