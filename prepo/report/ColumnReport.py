@@ -1,10 +1,13 @@
 """Specify metrics about a column and how to use them."""
 
 from abc import ABC, abstractmethod
-from typing import Dict, Self
+from typing import Dict, TypeVar
+from typing_extensions import Self
 from pydantic import BaseModel
 
 from prepo.alert.Alert import Alert
+
+ReportTypeT = TypeVar("ReportTypeT", bound=str)
 
 
 class ColumnReport(ABC, BaseModel):
@@ -13,7 +16,7 @@ class ColumnReport(ABC, BaseModel):
     name: str
 
     def __str__(self):
-        return "\n".join(f"{attr}: {value}" for attr, value in self.to_dict().items())
+        return "\n".join(f"{attr}: {value}" for attr, value in self.model_dump().items())
 
     def _calculate_change_alert(
         self,

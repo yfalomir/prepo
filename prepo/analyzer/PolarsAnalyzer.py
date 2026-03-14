@@ -5,6 +5,7 @@ import polars as pl
 
 from prepo.analyzer.Analyzer import Analyzer
 from prepo.analyzer.utils.FileType import FileType
+from prepo.report.BooleanColumnReport import BooleanColumnReport
 from prepo.report.NumericColumnReport import NumericColumnReport
 from prepo.report.StringColumnReport import StringColumnReport
 from prepo.report.TemporalColumnReport import TemporalColumnReport
@@ -77,28 +78,49 @@ class PolarsAnalyzer(Analyzer):
             null_count=series.null_count(),
         )
 
+    def generate_boolean_column_report(self, col: str, series: pl.Series) -> BooleanColumnReport:
+        """Calculate a report for a boolean column."""
+        true_count = series.sum()
+        null_count = series.null_count()
+        return BooleanColumnReport(
+            name=col,
+            true_proportion=true_count / series.len(),
+            false_proportion=1 - (true_count + null_count) / series.len(),
+            count=series.len(),
+            unique_count=series.n_unique(),
+            null_count=series.null_count(),
+        )
+
     def generate_column_report(self, df) -> list[ColumnReport]:
         """Return adequate ColumnReport instances for each column."""
         column_reports: list[ColumnReport] = []
         for col in df.columns:
             series = df[col]
-
-            # Generate report based on data type
             report: ColumnReport
+            # Generate report based on data type
             if series.dtype.is_numeric():
                 report = self.generate_numeric_column_report(col, series)
             elif series.dtype == pl.Utf8:
                 report = self.generate_string_column_report(col, series)
-            elif series.dtype in (pl.Date, pl.Time, pl.Duration):
+            elif (
+                series.dtype in (pl.Date, pl.Time, pl.Duration)
+                or series.dtype.base_type() == pl.Datetime
+            ):
                 report = self.generate_temporal_column_report(col, series)
+            elif series.dtype == pl.Boolean:
+                report = self.generate_boolean_column_report(col, series)
+            else:
+                continue  # Skip unsupported types (Boolean, Categorical, etc.)
+
             column_reports.append(report)
         return column_reports
 
     def generate_covariance_report(self, df) -> CovarianceReport:
-        """Calculate covariance between each pair of columns."""
+        """Calculate covariance between each pair of numeric columns."""
+        numeric_cols = [col for col in df.columns if df[col].dtype.is_numeric()]
         covariance_report = CovarianceReport(covariance_matrix={})
-        for index, col in enumerate(df.columns):
-            for covar_column in df.columns[index + 1 :]:
+        for index, col in enumerate(numeric_cols):
+            for covar_column in numeric_cols[index + 1 :]:
                 covar_value = pl.cov(df[col], df[covar_column], eager=True).item(0)
                 covariance_report.add_covariance(col, covar_column, covar_value)
         return covariance_report
